@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_material_light_1">@color/orange</color>
+    <color name="accent_material_light">#f5b800</color>
+    <color name="primary_dark_material_light">#3c52ca</color>
+    <color name="background_material_light">@color/orange</color>
+
+    <color name="orange">#ff9800</color>
+    <color name="red">#d00000</color>
+    <color name="green">#00b000</color>
+    <color name="dark_blue">#3949AB</color>
+    <color name="white">#ffffff</color>
+
+</resources>

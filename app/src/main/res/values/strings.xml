@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="low_storage_error">Ocr dependencies cannot be downloaded due to low device storage</string>
+    <string name="action_clear">Clear medals</string>
+    <string name="action_goto_game">Go to game</string>
+    <string name="action_load_image">Load images</string>
+    <string name="action_upload">Upload medals</string>
+    <string name="action_preferences">User details</string>
+    <string name="button_close">Close</string>
+    <string name="button_ok">Ok</string>
+    <string name="button_overlay"></string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_bar">button bar</string>
+    <string name="field_username">username</string>
+    <string name="field_password">password</string>
+    <string name="field_trainer">trainer</string>
+    <string name="field_previous_trainers">previous_trainers</string>
+    <string name="label_user_name">User Name :</string>
+    <string name="label_password">Password :</string>
+    <string name="label_trainer">Trainer :</string>
+    <string name="shared_prefs_current">current</string>
+    <string name="shared_prefs_previous">previous</string>
+    <string name="shared_prefs_user">user</string>
+    <string name="title_activity_main">WoPoGo Medals</string>
+    <string name="title_user_details">User details</string>
+    <string name="toast_failed_to_find">Failed to find any medals</string>
+    <string name="toast_updated_medal">\"%1$s\" set to %2$d</string>
+    <string name="ocr_error">"Error reading text: %1$s"</string>
+    <string name="user_cancelled">User cancelled.</string>
+    <string name="screen_cap">Screen cap</string>
+</resources>

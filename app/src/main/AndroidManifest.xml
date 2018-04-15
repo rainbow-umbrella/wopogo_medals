@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rainbow_umbrella.wopogo_medals"
+    android:installLocation="auto" >
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="true"
+        android:fullBackupContent="false"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon"
+        android:label="WoPoGo Medals"
+        android:supportsRtl = "true"
+        android:theme="@style/Theme.WoPoGoMedals" >
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
+        <activity
+            android:name="com.rainbow_umbrella.wopogo_medals.CheckPermissionsActivity"
+            android:label="@string/title_activity_main"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.rainbow_umbrella.wopogo_medals.MainActivity"
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.WoPoGoMedals">
+        </activity>
+        <activity android:name="com.rainbow_umbrella.wopogo_medals.OcrImageActivity"
+            android:label="Read Text From Image"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.rainbow_umbrella.wopogo_medals.SendMedalsActivity"
+            android:label="Send update to server"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.rainbow_umbrella.wopogo_medals.UserDetailsActivity"
+            android:theme="@style/Theme.WoPoGoMedals.Dialog"
+            android:label="User Preferences" />
+        <service android:name="com.rainbow_umbrella.wopogo_medals.OverlayService"
+            android:label="Overlay service"
+            android:exported="false" />
+    </application>
+
+</manifest>

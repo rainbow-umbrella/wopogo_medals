@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/goto_game"
+        android:icon="@drawable/pogo_white"
+        android:title="@string/action_goto_game"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/upload"
+        android:icon="@drawable/ic_file_upload_white_24dp"
+        android:title="@string/action_upload"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/clear_button"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:title="@string/action_clear"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/preferences_button"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/action_preferences"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/load_image"
+        android:icon="@drawable/ic_image_white_24dp"
+        android:title="@string/action_load_image"
+        app:showAsAction="ifRoom" />
+    </menu>
