@@ -17,6 +17,11 @@ import android.util.Log;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Grab a copy of the screen using the Media Projection class and return it as a bitmap. Currently
+ * hardcoded to be used by the OverlayService.
+ *
+ */
 public class ScreenGrabTask extends AsyncTask<String, Integer, Bitmap> {
     private static final String TAG = ScreenGrabTask.class.getSimpleName();
 

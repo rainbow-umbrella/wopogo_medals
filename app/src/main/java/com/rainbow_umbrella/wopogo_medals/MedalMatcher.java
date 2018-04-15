@@ -4,7 +4,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-
+/*
+ *  MedalMatcher
+ *
+ *  Attempt to match text blocks to a medal label and value. Input is a JSON string of text blocks.
+ *  The blocks are compared to a list of string values for the medals. If the start of the text
+ *  block matches the medal string and the subsequent block is an integer success is assumed. The
+ *  text blocks are not assured to be in the correct order and also special cases have been added
+ *  for "Johto" and "Berry Master" where background images match the strings "O" and "C" respectively
+ *
+ */
 public class MedalMatcher {
     public ArrayList<Medal> mMedalList;
     public MedalMatcher( ArrayList<Medal> medalList) {
@@ -27,6 +36,10 @@ public class MedalMatcher {
         }
         String partResult = new String();
         int i = 0;
+        // "." and "," characters are ignored. "," is used for thousand separators by the game and
+        // the OCR does not distinguish between "." and "," well. Note, this then means that the
+        // medal "Jogger must be divided by ten as it displays in kilometres a value stored to the
+        // nearest 100 metres.
         final String matchChars="0123456789,.";
         while (i < value.length() && matchChars.indexOf(value.charAt(i)) >= 0) {
             char thisChar = value.charAt(i);
@@ -67,7 +80,9 @@ public class MedalMatcher {
                                     valueResult = tmpValue;
                                 }
                                 // Special case for Johto which sees a "O" in the symbol.
-                                if (!valueFound && nextFirstLine.equals("O") && i < blocks.length() - 2) {
+                                if (!valueFound &&
+                                        (nextFirstLine.equals("O") || nextFirstLine.equals("C")) &&
+                                        i < blocks.length() - 2) {
                                     JSONArray nextNextBlock = new JSONArray(blocks.get(i + 2).toString());
                                     if (nextNextBlock.length() > 0) {
                                         String nextNextFirstLine = nextNextBlock.get(0).toString();
@@ -92,7 +107,9 @@ public class MedalMatcher {
                                     valueResult = tmpValue;
                                 }
                                 // Special case for Johto which sees a "O" in the symbol.
-                                if (!valueFound && previousFirstLine.equals("O") && i > 1) {
+                                if (!valueFound &&
+                                        (previousFirstLine.equals("O") || previousFirstLine.equals("C")) &&
+                                        i > 1) {
                                     JSONArray prevPrevBlock = new JSONArray(blocks.get(i - 2).toString());
                                     if (prevPrevBlock.length() > 0) {
                                         String prevPrevFirstLine = prevPrevBlock.get(0).toString();
@@ -110,6 +127,7 @@ public class MedalMatcher {
             }
             if (nameFound && valueFound) {
                 if (nameResult.equals("Jogger")) {
+                    // Stored to the nearest 100 metres.
                     valueResult /= 10;
                 }
                 result = new Medal(nameResult, valueResult);

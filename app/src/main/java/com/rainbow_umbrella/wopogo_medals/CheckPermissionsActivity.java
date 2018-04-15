@@ -11,6 +11,11 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+/*
+ * Initial activity for this application. The permissions for screen overlays and screen grab are
+ * requested before showing the main activity.
+ */
+
 public class CheckPermissionsActivity extends Activity {
     private static final String TAG = CheckPermissionsActivity.class.getSimpleName();
 
@@ -18,8 +23,8 @@ public class CheckPermissionsActivity extends Activity {
     private static final int REQUEST_SYSTEM_ALERT_PERMISSION    = 9002;
     private MediaProjectionManager mpm;
 
-    private static final String STATE_SCREEN_CAP_RESULT_CODE = "screen_cap_result_code";
-    private static final String STATE_SCREEN_CAP_RESULT_DATA = "screen_cap_result_data";
+    public static final String STATE_SCREEN_CAP_RESULT_CODE = "screen_cap_result_code";
+    public static final String STATE_SCREEN_CAP_RESULT_DATA = "screen_cap_result_data";
 
     public int mResultCode;
     public Intent mScreenCapResultData = null;

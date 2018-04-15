@@ -16,7 +16,10 @@ import android.widget.TextView;
 import android.support.v4.content.ContextCompat;
 import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
-
+/*
+ * Adapter to provide the current values of medals to be displayed as a list view. The values are
+ * edittable.
+ */
 public class MedalAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;

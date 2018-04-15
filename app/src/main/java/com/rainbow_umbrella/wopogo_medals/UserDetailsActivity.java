@@ -17,6 +17,10 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 
 import java.util.ArrayList;
 
+/*
+ * Activity to allow entry of the user details (username, password and trainer). Previous values of
+ * trainer are also stored to allow auto completion.
+ */
 public class UserDetailsActivity extends Activity implements View.OnClickListener {
     private static final String TAG = UserDetailsActivity.class.getSimpleName();
 

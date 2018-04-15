@@ -30,7 +30,9 @@ import android.graphics.Bitmap;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 /**
- * Created by matt on 08/08/2016.
+ * An overlay foregroud service which provides a button which can be used to screen grab the current
+ * screen and perform OCR on it.
+ *
  */
 
 public class OverlayService extends Service implements View.OnTouchListener, OcrTask.IOwner {
@@ -72,6 +74,7 @@ public class OverlayService extends Service implements View.OnTouchListener, Ocr
   ScreenGrabTask mScreenGrabTask = null;
 
   static final int REQUEST_SCREEN_GRAB = 9010;
+
   /**
    * Handler of incoming messages from clients.
    */
@@ -220,7 +223,8 @@ public class OverlayService extends Service implements View.OnTouchListener, Ocr
       }
     };
 
-    floatyView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.floating_view, interceptorLayout);
+    floatyView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+            inflate(R.layout.floating_view, interceptorLayout);
     overlayButton = floatyView.findViewById(R.id.overlay_button);
     overlayButton.setOnTouchListener(this);
     overlayButton.setVisibility(View.INVISIBLE);

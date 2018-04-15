@@ -40,9 +40,8 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import java.util.ArrayList;
 
 /**
- * Activity for the multi-tracker app.  This app detects text and displays the value with the
- * rear facing camera. During detection overlay graphics are drawn to indicate the position,
- * size, and contents of each TextBlock.
+ * Activity to read text blocks from images using the Google vision OCR.
+ *
  */
 public final class OcrImageActivity extends Activity implements OcrTask.IOwner {
     private static final String TAG = "OcrImageActivity";
@@ -70,10 +69,7 @@ public final class OcrImageActivity extends Activity implements OcrTask.IOwner {
         //setContentView(R.layout.ocr_capture);
 
         mResults = new ArrayList<String>();
-        // read parameters from the intent used to launch the activity.
-
-        // Check for the camera permission before accessing the camera.  If the
-        // permission is not granted yet, request permission.
+        // Check that we have permission to use the vision API.
         try {
 
             Context context = getApplicationContext();

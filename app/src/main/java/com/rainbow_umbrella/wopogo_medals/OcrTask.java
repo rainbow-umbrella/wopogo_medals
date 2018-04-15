@@ -11,6 +11,13 @@ import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+/**
+ * Retrieves text blocks from a bitmap in a separate thread using the Google Vision library. The
+ * response is returned as a JSON formatted string which represents an array of text blocks where
+ * each text block is an array of strings representing the lines. The calling activity/service
+ * should implement the OcrTask.IOwner interface.
+ */
+
 public class OcrTask extends AsyncTask<Bitmap, Integer, String >  {
 
     static final String TAG =  OcrTask.class.getSimpleName();

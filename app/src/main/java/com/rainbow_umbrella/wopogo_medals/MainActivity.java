@@ -1,17 +1,8 @@
 /*
- * Copyright (C) The Android Open Source Project
+ * WoPoGo medals.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Original code modified from the Google's vision project: https://developers.google.com/vision/text-overview
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package com.rainbow_umbrella.wopogo_medals;
@@ -56,8 +47,9 @@ import org.json.JSONObject;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
 /**
- * Main activity demonstrating how to pass extra parameters to an activity that
- * recognizes text.
+ * Main activity coordinates manual entry of values, reading values from the game itself and also
+ * reading from images. It then provides access to the upload of the data to the server.
+ *
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -87,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
     private OverlayService mOverlayService;
     private MediaProjectionManager mpm;
 
-    private static final String STATE_SCREEN_CAP_RESULT_CODE = "screen_cap_result_code";
-    private static final String STATE_SCREEN_CAP_RESULT_DATA = "screen_cap_result_data";
-
     public int mResultCode;
     public Intent mScreenCapResultData = null;
     private boolean mPickingPictures = false;
@@ -102,19 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            mResultCode = b.getInt(STATE_SCREEN_CAP_RESULT_CODE);
-            mScreenCapResultData = b.getParcelable(STATE_SCREEN_CAP_RESULT_DATA);
+            mResultCode = b.getInt(CheckPermissionsActivity.STATE_SCREEN_CAP_RESULT_CODE);
+            mScreenCapResultData = b.getParcelable(CheckPermissionsActivity.STATE_SCREEN_CAP_RESULT_DATA);
         }
-/*
-         else {
-            if (savedInstanceState != null) {
-                mResultCode = savedInstanceState.getInt(STATE_SCREEN_CAP_RESULT_CODE);
-                if (mResultCode != 0) {
-                    mScreenCapResultData = savedInstanceState.getParcelable(STATE_SCREEN_CAP_RESULT_DATA);
-                }
-            }
-        }
-        */
         // Read previous state of medals. Must be done before setting up the user interface as the
         // list adapter uses it to store any updates.
         readMedalList();
@@ -209,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mScreenCapResultData != null) {
-            outState.putInt(STATE_SCREEN_CAP_RESULT_CODE, mResultCode);
-            outState.putParcelable(STATE_SCREEN_CAP_RESULT_DATA, mScreenCapResultData);
+            outState.putInt(CheckPermissionsActivity.STATE_SCREEN_CAP_RESULT_CODE, mResultCode);
+            outState.putParcelable(CheckPermissionsActivity.STATE_SCREEN_CAP_RESULT_DATA, mScreenCapResultData);
         }
     }
 

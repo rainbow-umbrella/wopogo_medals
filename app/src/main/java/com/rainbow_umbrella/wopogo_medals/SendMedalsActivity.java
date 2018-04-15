@@ -3,6 +3,7 @@ package com.rainbow_umbrella.wopogo_medals;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +20,13 @@ import com.android.volley.toolbox.Volley;
 import com.android.volley.VolleyLog;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.CommonStatusCodes;
-
+/*
+ * Upload updated medal values to the wopogo.uk server.
+ *
+ */
 public class SendMedalsActivity extends Activity {
 
+    private static final String TAG = SendMedalsActivity.class.getSimpleName();
     String mUsername;
     String mPassword;
     String mTrainer;
@@ -61,6 +66,7 @@ public class SendMedalsActivity extends Activity {
                 }
             }
             body.put("medals", medals);
+            Log.d(TAG, "Message to send: " + body.toString());
         } catch (JSONException e)
         {
 
