@@ -14,8 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.TextView;
 import android.support.v4.content.ContextCompat;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
+
+
 /*
  * Adapter to provide the current values of medals to be displayed as a list view. The values are
  * edittable.
@@ -89,6 +92,16 @@ public class MedalAdapter extends BaseAdapter {
                     mSharedPreferences.edit().putInt(currentMedal.mName, currentMedal.mValue).apply();
 //                    hideKeyboard(v);
                 }
+            }
+        });
+        valueTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard(v);
+                    v.clearFocus();
+                }
+                return true;
             }
         });
         /*

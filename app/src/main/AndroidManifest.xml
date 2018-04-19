@@ -43,6 +43,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.rainbow_umbrella.wopogo_medals.UserDetailsActivity"
             android:theme="@style/Theme.WoPoGoMedals.Dialog"
+            android:windowSoftInputMode="adjustPan"
             android:label="User Preferences" />
         <service android:name="com.rainbow_umbrella.wopogo_medals.OverlayService"
             android:label="Overlay service"

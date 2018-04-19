@@ -34,6 +34,7 @@
         android:layout_toRightOf="@+id/medal_list_name"
         android:inputType="number"
         android:imeOptions="actionDone"
+        android:selectAllOnFocus="true"
         tools:text="Value"
         />
 

@@ -26,14 +26,18 @@ import android.media.projection.MediaProjectionManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.net.Uri;
+import com.android.volley.RequestQueue;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
 /**
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private MedalMatcher mMedalMatcher;
     private MedalAdapter mMedalAdapter;
     private Toolbar mToolbar;
+    public RequestQueue mRequestQueue;
 
     private static final int REQUEST_OCR_IMAGE                  = 9000;
     private static final int REQUEST_MEDIA_PROJECTION           = 9001;
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
          * Create object used to match text blocks to medals with values.
          */
         mMedalMatcher = new MedalMatcher(mMedalList);
-
+        mRequestQueue = Volley.newRequestQueue(this);
         if (Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(this)) {
             if (hasScreenCapPermission()) {
                 // Launch service right away - the user has already previously granted permission
@@ -501,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Failed: " + data.getStringExtra("error"));
+                builder.setMessage("Failed: " + data.getStringExtra("response"));
                 builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -511,6 +517,7 @@ public class MainActivity extends AppCompatActivity {
                 alert.show();
 
             }
+            mRequestQueue. getCache().clear();
         }
         else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -554,6 +561,8 @@ public class MainActivity extends AppCompatActivity {
                 userPrefs.getString(getString(R.string.field_password), ""));
         intent.putExtra(getString(R.string.field_trainer),
                 userPrefs.getString(getString(R.string.field_trainer), ""));
+        intent.putExtra(getString(R.string.field_api_key),
+                userPrefs.getString(getString(R.string.field_api_key), ""));
         ArrayList<String> medalNames = new ArrayList<String>();
         ArrayList<Integer> medalValues = new ArrayList<Integer>();
         for (int i = 0; i < mMedalList.size(); i++) {
@@ -562,6 +571,7 @@ public class MainActivity extends AppCompatActivity {
         }
         intent.putStringArrayListExtra("medalNames", medalNames);
         intent.putIntegerArrayListExtra("medalValues", medalValues);
+        intent.putExtra("queue", mRequestQueue.toString());
         startActivityForResult(intent, REQUEST_UPLOAD_DATA);
     }
 
@@ -578,6 +588,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.FLAG_EDITOR_ACTION || keyCode == KeyEvent.KEYCODE_ENTER) {
+            View current = getCurrentFocus();
+            if (current != null) {
+                current.clearFocus();
+                return true;
+            }
+            View view = findViewById(android.R.id.content);
+            if ( view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+        return false;
     }
 
     @Override

@@ -79,7 +79,8 @@ public class MedalMatcher {
                                     valueFound = true;
                                     valueResult = tmpValue;
                                 }
-                                // Special case for Johto which sees a "O" in the symbol.
+                                // Special cases for Johto which sees a "O" in the symbol and
+                                // "Berry Master" which sees a "C".
                                 if (!valueFound &&
                                         (nextFirstLine.equals("O") || nextFirstLine.equals("C")) &&
                                         i < blocks.length() - 2) {
@@ -87,33 +88,6 @@ public class MedalMatcher {
                                     if (nextNextBlock.length() > 0) {
                                         String nextNextFirstLine = nextNextBlock.get(0).toString();
                                         tmpValue = getValue(nextNextFirstLine);
-                                        if (tmpValue >= 0) {
-                                            valueFound = true;
-                                            valueResult = tmpValue;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // Sometimes the reader returns blocks from the bottom of the screen so check
-                        // the previous block.
-                        if (i > 0 && !valueFound) {
-                            JSONArray previousBlock = new JSONArray(blocks.get(i - 1).toString());
-                            if (previousBlock.length() > 0) {
-                                String previousFirstLine = previousBlock.get(0).toString();
-                                int tmpValue = getValue(previousFirstLine);
-                                if (tmpValue >= 0) {
-                                    valueFound = true;
-                                    valueResult = tmpValue;
-                                }
-                                // Special case for Johto which sees a "O" in the symbol.
-                                if (!valueFound &&
-                                        (previousFirstLine.equals("O") || previousFirstLine.equals("C")) &&
-                                        i > 1) {
-                                    JSONArray prevPrevBlock = new JSONArray(blocks.get(i - 2).toString());
-                                    if (prevPrevBlock.length() > 0) {
-                                        String prevPrevFirstLine = prevPrevBlock.get(0).toString();
-                                        tmpValue = getValue(prevPrevFirstLine);
                                         if (tmpValue >= 0) {
                                             valueFound = true;
                                             valueResult = tmpValue;

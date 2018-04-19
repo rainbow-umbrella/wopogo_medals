@@ -10,6 +10,8 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Retrieves text blocks from a bitmap in a separate thread using the Google Vision library. The
@@ -53,11 +55,17 @@ public class OcrTask extends AsyncTask<Bitmap, Integer, String >  {
         SparseArray<TextBlock> textBlocks = textRecognizer.detect(theFrame);
         textRecognizer.release();
         Log.d(TAG, "textBlocks" + textBlocks.toString());
+        // Sort the text blocks into vertical order.
+        TextBlockComparator[] orderList = new TextBlockComparator[textBlocks.size()];
+        for (int i = 0; i < textBlocks.size(); i++) {
+            orderList[i] = new TextBlockComparator(textBlocks.get(textBlocks.keyAt(i)), i);
+        }
+        Arrays.sort(orderList);
         String result = new String();
         result = "[";
         boolean first = true;
         for (int i = 0; i < textBlocks.size(); i++) {
-            TextBlock textBlock = textBlocks.get(textBlocks.keyAt(i));
+            TextBlock textBlock = textBlocks.get(textBlocks.keyAt(orderList[i].mIndex));
             if (!first) {
                 result += ",";
             }
@@ -65,7 +73,6 @@ public class OcrTask extends AsyncTask<Bitmap, Integer, String >  {
             result += "[";
             first = false;
             boolean firstLine = true;
-
             for (Text line : textBlock.getComponents()) {
                 if (!firstLine) {
                     result += ",";
