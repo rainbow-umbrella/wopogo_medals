@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /*
@@ -28,11 +29,15 @@ public class MedalAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Medal> mDataSource;
     private SharedPreferences mSharedPreferences;
+    private Map<String, String> mMedalMap;
+    private Map<String, Integer> mPreviousValues;
 
-    public MedalAdapter(Context context, ArrayList<Medal> items, SharedPreferences sharedPreferences) {
+    public MedalAdapter(Context context, ArrayList<Medal> items, SharedPreferences sharedPreferences, Map<String, String> medalMap, Map<String, Integer> previousValues) {
         mContext = context;
         mDataSource = items;
         mSharedPreferences = sharedPreferences;
+        mMedalMap = medalMap;
+        mPreviousValues = previousValues;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -76,8 +81,8 @@ public class MedalAdapter extends BaseAdapter {
                 if (hasFocus) {
                     if (edit.getText().toString().equals("?")) {
                         edit.setText("");
-                        edit.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                     }
+                    edit.setTextColor(ContextCompat.getColor(mContext, R.color.green));
 //                    showKeyboard(v);
                 } else {
                     Medal currentMedal = mDataSource.get(index);
@@ -86,10 +91,16 @@ public class MedalAdapter extends BaseAdapter {
                         edit.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                         mDataSource.get(index).mValue = -1;
                     } else {
-                        edit.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                         currentMedal.mValue = Integer.parseInt(edit.getText().toString());
+                        int previousValue;
+                        if (mPreviousValues.containsKey(mMedalMap.get(currentMedal.mName))) {
+                            previousValue = mPreviousValues.get(mMedalMap.get(currentMedal.mName));
+                        } else {
+                            previousValue = -1;
+                        }
+                        edit.setTextColor(ContextCompat.getColor(mContext, currentMedal.mValue == previousValue ? R.color.grey : R.color.green));
                     }
-                    mSharedPreferences.edit().putInt(currentMedal.mName, currentMedal.mValue).apply();
+                    mSharedPreferences.edit().putInt(mMedalMap.get(currentMedal.mName), currentMedal.mValue).apply();
 //                    hideKeyboard(v);
                 }
             }
@@ -104,37 +115,19 @@ public class MedalAdapter extends BaseAdapter {
                 return true;
             }
         });
-        /*
-        valueTextView.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                ListView lv = (ListView)parent;
-                if(actionId == EditorInfo.IME_ACTION_NEXT &&
-                        lv != null &&
-                        position >= lv.getLastVisiblePosition() &&
-                        position != mDataSource.size() - 1) {  //audit object holds the data for the adapter
-                    lv.smoothScrollToPosition(position + 1);
-                    lv.postDelayed(new Runnable() {
-                        public void run() {
-                            //TODO: Need to work out how to find the next edit box.
-                            TextView nextField = (TextView)holderf.qtyf.focusSearch(View.FOCUS_DOWN);
-                            if(nextField != null) {
-                                nextField.requestFocus();
-                            }
-                        }
-                    }, 200);
-                    return true;
-                }
-                return false;
-            }
-        });
-        */
-        if (medal.mValue == -1) {
+      if (medal.mValue == -1) {
             valueTextView.setText("?");
             valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         } else {
             valueTextView.setText(Integer.toString(medal.mValue));
-            valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+            int previousValue;
+            if (mPreviousValues.containsKey(mMedalMap.get(medal.mName))) {
+                previousValue = mPreviousValues.get(mMedalMap.get(medal.mName));
+            } else {
+                previousValue = -1;
+            }
+
+            valueTextView.setTextColor(ContextCompat.getColor(mContext, medal.mValue == previousValue ? R.color.grey : R.color.green));
         }
         return rowView;
     }

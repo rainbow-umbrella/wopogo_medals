@@ -1,9 +1,13 @@
 package com.rainbow_umbrella.wopogo_medals;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -23,13 +27,14 @@ import java.util.ArrayList;
  */
 public class UserDetailsActivity extends Activity implements View.OnClickListener {
     private static final String TAG = UserDetailsActivity.class.getSimpleName();
-
+    private static final String MIMETYPE_TEXT_PLAIN = new String("text/plain");
     EditText mUserNameEdit;
     EditText mPasswordEdit;
     EditText mApiKeyEdit;
     AutoCompleteTextView mTrainerEdit;
     String[] mPreviousTrainers;
     ArrayList<String> mPreviousTrainerList;
+    Button mPasteButton;
 
     SharedPreferences mSharedPreferences;
 
@@ -43,6 +48,8 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.ok_button).setOnClickListener(this);
+        mPasteButton = (Button)findViewById(R.id.paste_button);
+        mPasteButton.setOnClickListener(this);
 
 
     }
@@ -55,13 +62,6 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
 
     }
 
-
-    private OnClickListener mThisButtonListener = new OnClickListener() {
-        public void onClick(View v) {
-            mTrainerEdit.setText (((Button)v).getText().toString());
-        }
-    };
-
     public void onClick(View v) {
         if (v.getId() == R.id.ok_button) {
             storeFields();
@@ -72,6 +72,29 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
             Intent response = new Intent();
             setResult(CommonStatusCodes.SUCCESS, response);
             finish();
+        } else if (v.getId() == R.id.paste_button) {
+            if (v == mPasteButton) {
+                String textToPaste = null;
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+                if (clipboard.hasPrimaryClip()) {
+                    ClipData clip = clipboard.getPrimaryClip();
+
+                    // if you need text data only, use:
+                    if (clip.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))
+                        // WARNING: The item could cantain URI that points to the text data.
+                        // In this case the getText() returns null and this code fails!
+                        textToPaste = clip.getItemAt(0).getText().toString();
+
+                    // or you may coerce the data to the text representation:
+                    // textToPaste = clip.getItemAt(0).coerceToText(this).toString();
+                }
+
+                if (!TextUtils.isEmpty(textToPaste))
+                    ((TextView) findViewById(R.id.editApiKey)).setText(textToPaste);
+
+            }
         }
     }
 

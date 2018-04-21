@@ -2,7 +2,7 @@
     { "label" : "XP", "field" : "xp" },
     { "label" : "Gold Gyms", "field" : "gold_gyms" },
     { "label" : "Gym Badges", "field" : "gym_badges" },
-    { "label" : "Max Defending Hours", "field" : "gym_badges" },
+    { "label" : "Max Defending Hours", "field" : "max_defending_hours" },
     { "label" : "Unique 100% IV Pokemon", "field" : "unique_hundred_iv" },
     { "label" : "Jogger", "field" : "jogger" },
     { "label" : "Kanto", "field" : "kanto" },

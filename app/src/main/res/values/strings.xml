@@ -12,8 +12,11 @@
     <string name="button_overlay"></string>
     <string name="button_cancel">Cancel</string>
     <string name="button_bar">button bar</string>
+    <string name="button_paste">Paste from clipboard</string>
     <string name="error_not_logged_in">Not logged in</string>
     <string name="error_api_key_is_invalid">API key is not valid</string>
+    <string name="error_api_key_missing">An API key must be provided.</string>
+    <string name="error_trainer_missing">A valid trainer must be specified.</string>
     <string name="field_api_key">api_key</string>
     <string name="field_username">username</string>
     <string name="field_password">password</string>
@@ -34,5 +37,5 @@
     <string name="user_cancelled">User cancelled.</string>
     <string name="screen_cap">Screen cap</string>
     <string name="timestamp_format">"yyyy-MM-dd HH:mm::ss"</string>
-    <string name="website_url">https://test.wopogo.uk/app/api/stat/stats.php</string>
+    <string name="website_url">https://test.wopogo.uk/app/api/v1/stat/stats.php</string>
 </resources>
