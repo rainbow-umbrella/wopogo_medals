@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class SendMedalsActivity extends Activity {
         final String format = getString(R.string.timestamp_format);
         long dateInMillis = System.currentTimeMillis();
         final SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String timeString = sdf.format(new Date(dateInMillis));
 
         Bundle b = getIntent().getExtras();

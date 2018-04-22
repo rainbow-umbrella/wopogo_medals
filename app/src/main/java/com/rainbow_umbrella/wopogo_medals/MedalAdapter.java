@@ -98,7 +98,16 @@ public class MedalAdapter extends BaseAdapter {
                         } else {
                             previousValue = -1;
                         }
-                        edit.setTextColor(ContextCompat.getColor(mContext, currentMedal.mValue == previousValue ? R.color.grey : R.color.green));
+                        int textColor;
+                        if (currentMedal.mValue > previousValue) {
+                            textColor = R.color.green;
+                        } else if (currentMedal.mValue == previousValue) {
+                            textColor = R.color.grey;
+                        } else {
+                            textColor = R.color.red;
+                        }
+
+                        edit.setTextColor(ContextCompat.getColor(mContext, textColor));
                     }
                     mSharedPreferences.edit().putInt(mMedalMap.get(currentMedal.mName), currentMedal.mValue).apply();
 //                    hideKeyboard(v);
@@ -126,8 +135,15 @@ public class MedalAdapter extends BaseAdapter {
             } else {
                 previousValue = -1;
             }
-
-            valueTextView.setTextColor(ContextCompat.getColor(mContext, medal.mValue == previousValue ? R.color.grey : R.color.green));
+            int textColor;
+            if (medal.mValue > previousValue) {
+                textColor = R.color.green;
+            } else if (medal.mValue == previousValue) {
+                textColor = R.color.grey;
+            } else {
+                textColor = R.color.red;
+            }
+            valueTextView.setTextColor(ContextCompat.getColor(mContext, textColor));
         }
         return rowView;
     }

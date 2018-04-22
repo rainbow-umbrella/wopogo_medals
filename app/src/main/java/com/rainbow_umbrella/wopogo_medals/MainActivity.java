@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean mPickingPictures = false;
     private SharedPreferences mSharedPrefs;
     private SharedPreferences mPreviousSharedPrefs;
+    private SharedPreferences mUserSharedPrefs;
+    private String mCurrentTrainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +108,13 @@ public class MainActivity extends AppCompatActivity {
         // Read previous state of medals. Must be done before setting up the user interface as the
         // list adapter uses it to store any updates.
         mSharedPrefs =  getSharedPreferences(getString(R.string.shared_prefs_current), MODE_PRIVATE);
-        mPreviousSharedPrefs = getSharedPreferences(getString(R.string.shared_prefs_previous), MODE_PRIVATE);
+        mUserSharedPrefs = getSharedPreferences(getString(R.string.shared_prefs_user), MODE_PRIVATE);
+
+        mCurrentTrainer = mUserSharedPrefs.getString(getString(R.string.field_trainer), "");
+        mPreviousSharedPrefs = getSharedPreferences(
+                getString(R.string.shared_prefs_previous, mCurrentTrainer), MODE_PRIVATE);
         readMedalList();
-        loadSharedPrefs();
+        loadPreviousSharedPrefs();
         // Set up UI.
         setupUserInterface();
 
@@ -171,18 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loadSharedPrefs() {
-        /*
-        Map<String, ?> storedMedals = mSharedPrefs.getAll();
-        for (String key : storedMedals.keySet()) {
-            for (int i = 0 ; i < mMedalList.size(); i++) {
-                if (mMedalList.get(i).mName.equals(key)) {
-                    mMedalList.get(i).mValue = (int)mSharedPrefs.getInt(key, -1);
-                    break;
-                }
-            }
-        }
-        */
+    private void loadPreviousSharedPrefs() {
+        mPreviousMedalList.clear();
         Map<String, ?> previousStoredMedals = mPreviousSharedPrefs.getAll();
         for (String key : previousStoredMedals.keySet()) {
             mPreviousMedalList.put(key, mPreviousSharedPrefs.getInt(key, -1));
@@ -313,15 +309,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkUserDetails() {
-        SharedPreferences userPrefs = getSharedPreferences(getString(R.string.shared_prefs_user), MODE_PRIVATE);
         boolean success = true;
         String failureString = new String();
-        if (userPrefs.getString(getString(R.string.field_api_key), "").equals("")) {
+        if (mUserSharedPrefs.getString(getString(R.string.field_api_key), "").equals("")) {
             success = false;
             failureString = getString(R.string.error_api_key_missing) + System.lineSeparator();
 
         }
-        if (userPrefs.getString(getString(R.string.field_trainer), "").equals("")) {
+        if (mUserSharedPrefs.getString(getString(R.string.field_trainer), "").equals("")) {
             success = false;
             failureString += getString(R.string.error_trainer_missing) + System.lineSeparator();
         }
@@ -345,10 +340,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void confirmUpload() {
-        SharedPreferences userPrefs = getSharedPreferences(getString(R.string.shared_prefs_user), MODE_PRIVATE);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(String.format("Upload details for trainer \"%s\"",
-                userPrefs.getString(getString(R.string.field_trainer), "")));
+                mCurrentTrainer));
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
@@ -591,9 +585,19 @@ public class MainActivity extends AppCompatActivity {
             }
             mRequestQueue. getCache().clear();
         }
-        else {
+        else if (requestCode == REQUEST_USER_PREFS) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data.getBooleanExtra(getString(R.string.field_trainer_has_changed), false)) {
+                    mCurrentTrainer = data.getStringExtra(getString(R.string.field_trainer));
+                    mPreviousSharedPrefs = getSharedPreferences(getString(R.string.shared_prefs_previous, mCurrentTrainer), MODE_PRIVATE);
+                    loadPreviousSharedPrefs();
+                    mMedalAdapter.notifyDataSetChanged();
+                }
+            }
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+
 
     }
 
@@ -639,15 +643,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadData() {
         Intent intent = new Intent(this, SendMedalsActivity.class);
-        SharedPreferences userPrefs = getSharedPreferences(getString(R.string.shared_prefs_user), MODE_PRIVATE);
         intent.putExtra(getString(R.string.field_username),
-                userPrefs.getString(getString(R.string.field_username), ""));
+                mUserSharedPrefs.getString(getString(R.string.field_username), ""));
         intent.putExtra(getString(R.string.field_password),
-                userPrefs.getString(getString(R.string.field_password), ""));
+                mUserSharedPrefs.getString(getString(R.string.field_password), ""));
         intent.putExtra(getString(R.string.field_trainer),
-                userPrefs.getString(getString(R.string.field_trainer), ""));
+                mCurrentTrainer);
         intent.putExtra(getString(R.string.field_api_key),
-                userPrefs.getString(getString(R.string.field_api_key), ""));
+                mUserSharedPrefs.getString(getString(R.string.field_api_key), ""));
         ArrayList<String> medalNames = new ArrayList<String>();
         ArrayList<Integer> medalValues = new ArrayList<Integer>();
         for (int i = 0; i < mMedalList.size(); i++) {

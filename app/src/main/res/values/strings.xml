@@ -22,12 +22,13 @@
     <string name="field_password">password</string>
     <string name="field_trainer">trainer</string>
     <string name="field_previous_trainers">previous_trainers</string>
+    <string name="field_trainer_has_changed">trainer_has_changed</string>
     <string name="label_api_key">Api Key :</string>
     <string name="label_user_name">User Name :</string>
     <string name="label_password">Password :</string>
     <string name="label_trainer">Trainer :</string>
     <string name="shared_prefs_current">current</string>
-    <string name="shared_prefs_previous">previous</string>
+    <string name="shared_prefs_previous">previous_%1$s</string>
     <string name="shared_prefs_user">user</string>
     <string name="title_activity_main">WoPoGo Medals</string>
     <string name="title_user_details">User details</string>
@@ -36,6 +37,6 @@
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="user_cancelled">User cancelled.</string>
     <string name="screen_cap">Screen cap</string>
-    <string name="timestamp_format">"yyyy-MM-dd HH:mm::ss"</string>
+    <string name="timestamp_format">"yyyy-MM-dd HH:mm:ss"</string>
     <string name="website_url">https://test.wopogo.uk/app/api/v1/stat/stats.php</string>
 </resources>

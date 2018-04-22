@@ -50,7 +50,11 @@ public class MedalMatcher {
         partResult = partResult.replaceAll(removeCommas, "$1");
         partResult = partResult.replaceAll(",", ".");
         if (partResult.length() > 0) {
-            result = (int) Float.parseFloat(partResult);
+            try {
+                result = (int) Float.parseFloat(partResult);
+            } catch (NumberFormatException e) {
+                result = -1;
+            }
         }
         return result;
     }

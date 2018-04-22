@@ -60,13 +60,21 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
 
     public void onClick(View v) {
         if (v.getId() == R.id.ok_button) {
-            storeFields();
             Intent response = new Intent();
+            String oldTrainer = mSharedPreferences.getString(getString(R.string.field_trainer), "");
+            String newTrainer = mTrainerEdit.getText().toString();
+            if (newTrainer != oldTrainer) {
+                response.putExtra(getString(R.string.field_trainer), newTrainer);
+                response.putExtra(getString(R.string.field_trainer_has_changed), true);
+            } else {
+                response.putExtra(getString(R.string.field_trainer_has_changed), false);
+            }
+            storeFields();
             setResult(CommonStatusCodes.SUCCESS, response);
             finish();
         } else if (v.getId() == R.id.cancel_button) {
             Intent response = new Intent();
-            setResult(CommonStatusCodes.SUCCESS, response);
+            setResult(CommonStatusCodes.CANCELED, response);
             finish();
         } else if (v.getId() == R.id.paste_button) {
             String textToPaste = null;
