@@ -34,8 +34,6 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
     AutoCompleteTextView mTrainerEdit;
     String[] mPreviousTrainers;
     ArrayList<String> mPreviousTrainerList;
-    Button mPasteButton;
-
     SharedPreferences mSharedPreferences;
 
     @Override
@@ -48,9 +46,7 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.ok_button).setOnClickListener(this);
-        mPasteButton = (Button)findViewById(R.id.paste_button);
-        mPasteButton.setOnClickListener(this);
-
+        findViewById(R.id.paste_button).setOnClickListener(this);
 
     }
 
@@ -73,28 +69,25 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
             setResult(CommonStatusCodes.SUCCESS, response);
             finish();
         } else if (v.getId() == R.id.paste_button) {
-            if (v == mPasteButton) {
-                String textToPaste = null;
+            String textToPaste = null;
 
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-                if (clipboard.hasPrimaryClip()) {
-                    ClipData clip = clipboard.getPrimaryClip();
+            if (clipboard.hasPrimaryClip()) {
+                ClipData clip = clipboard.getPrimaryClip();
 
-                    // if you need text data only, use:
-                    if (clip.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))
-                        // WARNING: The item could cantain URI that points to the text data.
-                        // In this case the getText() returns null and this code fails!
-                        textToPaste = clip.getItemAt(0).getText().toString();
+                // if you need text data only, use:
+                if (clip.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))
+                    // WARNING: The item could cantain URI that points to the text data.
+                    // In this case the getText() returns null and this code fails!
+                    textToPaste = clip.getItemAt(0).getText().toString();
 
-                    // or you may coerce the data to the text representation:
-                    // textToPaste = clip.getItemAt(0).coerceToText(this).toString();
-                }
-
-                if (!TextUtils.isEmpty(textToPaste))
-                    ((TextView) findViewById(R.id.editApiKey)).setText(textToPaste);
-
+                // or you may coerce the data to the text representation:
+                textToPaste = clip.getItemAt(0).coerceToText(this).toString();
             }
+
+            if (!TextUtils.isEmpty(textToPaste))
+                ((TextView) findViewById(R.id.editApiKey)).setText(textToPaste);
         }
     }
 

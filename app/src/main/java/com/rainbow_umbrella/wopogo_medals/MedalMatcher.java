@@ -43,13 +43,14 @@ public class MedalMatcher {
         final String matchChars="0123456789,.";
         while (i < value.length() && matchChars.indexOf(value.charAt(i)) >= 0) {
             char thisChar = value.charAt(i);
-            if (thisChar != ',' && thisChar != '.') {
-                partResult += thisChar;
-            }
+            partResult += thisChar;
             i++;
         }
+        final String removeCommas="[\\.,](\\d\\d\\d)";
+        partResult = partResult.replaceAll(removeCommas, "$1");
+        partResult = partResult.replaceAll(",", ".");
         if (partResult.length() > 0) {
-            result = Integer.parseInt(partResult);
+            result = (int) Float.parseFloat(partResult);
         }
         return result;
     }
@@ -100,10 +101,6 @@ public class MedalMatcher {
                 }
             }
             if (nameFound && valueFound) {
-                if (nameResult.equals("Jogger")) {
-                    // Stored to the nearest 100 metres.
-                    valueResult /= 10;
-                }
                 result = new Medal(nameResult, valueResult);
             }
         } catch (JSONException e) {

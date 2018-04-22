@@ -8,8 +8,8 @@ android {
         applicationId "com.rainbow_umbrella.wopogo_medals"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 5
-        versionName "0.0.93"
+        versionCode 8
+        versionName "0.0.96"
     }
     buildTypes {
         release {

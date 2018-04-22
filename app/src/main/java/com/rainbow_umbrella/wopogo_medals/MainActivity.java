@@ -353,7 +353,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 uploadData();
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -426,11 +425,11 @@ public class MainActivity extends AppCompatActivity {
             // service through an IDL interface, so get a client-side
             // representation of that from the raw service object.
             mService = new Messenger(service);
-
+/*
             Toast.makeText(MainActivity.this,
                     "Attached",
                     Toast.LENGTH_SHORT).show();
-
+*/
             // We want to monitor the service for as long as we are
             // connected to it.
             try {
@@ -467,11 +466,11 @@ public class MainActivity extends AppCompatActivity {
         bindService(new Intent(MainActivity.this,
                 OverlayService.class), mConnection, Context.BIND_AUTO_CREATE);
         mIsBound = true;
-
+/*
         Toast.makeText(MainActivity.this,
                 "Binding",
                 Toast.LENGTH_SHORT).show();
-
+*/
     }
 
     void doUnbindService() {
@@ -493,11 +492,11 @@ public class MainActivity extends AppCompatActivity {
             // Detach our existing connection.
             unbindService(mConnection);
             mIsBound = false;
-
+/*
             Toast.makeText(MainActivity.this,
                     "Unbinding",
                     Toast.LENGTH_SHORT).show();
-
+*/
         }
     }
 
@@ -619,7 +618,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mMedalList.get(i).mName.equals(medal.mName)) {
                     mMedalList.get(i).mValue = medal.mValue;
                     mMedalAdapter.notifyDataSetChanged();
-                    mSharedPrefs.edit().putInt(medal.mName, medal.mValue).apply();
+                    mSharedPrefs.edit().putInt(mMedalDefs.get(medal.mName), medal.mValue).apply();
                     result = true;
                     Toast.makeText(this,
                             getString(R.string.toast_updated_medal, medal.mName, medal.mValue),
@@ -652,8 +651,18 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> medalNames = new ArrayList<String>();
         ArrayList<Integer> medalValues = new ArrayList<Integer>();
         for (int i = 0; i < mMedalList.size(); i++) {
-            medalNames.add(mMedalDefs.get(mMedalList.get(i).mName));
-            medalValues.add(mMedalList.get(i).mValue);
+            String key = mMedalDefs.get(mMedalList.get(i).mName);
+            int newValue = mMedalList.get(i).mValue;
+            int oldValue;
+            if (mPreviousMedalList.containsKey(key)) {
+                oldValue = mPreviousMedalList.get(key);
+            } else {
+                oldValue = -1;
+            }
+            if (newValue != -1 && newValue != oldValue) {
+                medalNames.add(mMedalDefs.get(mMedalList.get(i).mName));
+                medalValues.add(mMedalList.get(i).mValue);
+            }
         }
         intent.putStringArrayListExtra("medalNames", medalNames);
         intent.putIntegerArrayListExtra("medalValues", medalValues);

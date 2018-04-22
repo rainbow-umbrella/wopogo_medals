@@ -74,14 +74,12 @@ public class SendMedalsActivity extends Activity {
             //body.put("password", mPassword);
             //body.put("trainer", mTrainer);
             for (int i = 0; i < mMedalNames.size(); i++) {
-                if (mMedalValues.get(i) != -1) {
-                    JSONObject medal = new JSONObject();
-                    medal.put("trainer", mTrainer);
-                    medal.put("timestamp", timeString);
-                    medal.put("stat", mMedalNames.get(i));
-                    medal.put("value", String.valueOf(mMedalValues.get(i)));
-                    stats.put(medal);
-                }
+                JSONObject medal = new JSONObject();
+                medal.put("trainer", mTrainer);
+                medal.put("timestamp", timeString);
+                medal.put("stat", mMedalNames.get(i));
+                medal.put("value", String.valueOf(mMedalValues.get(i)));
+                stats.put(medal);
             }
             body.put("stats", stats);
             Log.d(TAG, "Message to send: " + body.toString());
