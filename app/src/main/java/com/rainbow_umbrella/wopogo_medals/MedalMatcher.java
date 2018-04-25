@@ -87,7 +87,8 @@ public class MedalMatcher {
                                 // Special cases for Johto which sees a "O" in the symbol and
                                 // "Berry Master" which sees a "C".
                                 if (!valueFound &&
-                                        (nextFirstLine.equals("O") || nextFirstLine.equals("C")) &&
+                                        (nextFirstLine.equals("O") || nextFirstLine.equals("C") ||
+                                                nextFirstLine.equals("X")) &&
                                         i < blocks.length() - 2) {
                                     JSONArray nextNextBlock = new JSONArray(blocks.get(i + 2).toString());
                                     if (nextNextBlock.length() > 0) {

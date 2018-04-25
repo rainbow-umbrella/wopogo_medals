@@ -587,7 +587,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (requestCode == REQUEST_USER_PREFS) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
-                if (data.getBooleanExtra(getString(R.string.field_trainer_has_changed), false)) {
+                if (data != null && data.getBooleanExtra(getString(R.string.field_trainer_has_changed), false)) {
                     mCurrentTrainer = data.getStringExtra(getString(R.string.field_trainer));
                     mPreviousSharedPrefs = getSharedPreferences(getString(R.string.shared_prefs_previous, mCurrentTrainer), MODE_PRIVATE);
                     loadPreviousSharedPrefs();
