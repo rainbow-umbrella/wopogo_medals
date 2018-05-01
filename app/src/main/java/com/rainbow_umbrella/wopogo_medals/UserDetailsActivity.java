@@ -28,8 +28,6 @@ import java.util.ArrayList;
 public class UserDetailsActivity extends Activity implements View.OnClickListener {
     private static final String TAG = UserDetailsActivity.class.getSimpleName();
     private static final String MIMETYPE_TEXT_PLAIN = new String("text/plain");
-    EditText mUserNameEdit;
-    EditText mPasswordEdit;
     EditText mApiKeyEdit;
     AutoCompleteTextView mTrainerEdit;
     String[] mPreviousTrainers;
@@ -51,8 +49,6 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
     }
 
     private void setupUserInterface() {
-        mUserNameEdit = (EditText)findViewById(R.id.editUserName);
-        mPasswordEdit = (EditText)findViewById(R.id.editPassword);
         mTrainerEdit = (AutoCompleteTextView) findViewById(R.id.editTrainer);
         mApiKeyEdit = (EditText)findViewById(R.id.editApiKey);
 
@@ -100,12 +96,6 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
     }
 
     public void initialiseFields() {
-
-
-        mUserNameEdit.setText(mSharedPreferences.getString(getString(R.string.field_username), ""),
-                TextView.BufferType.EDITABLE);
-        mPasswordEdit.setText(mSharedPreferences.getString(getString(R.string.field_password), ""),
-                TextView.BufferType.EDITABLE);
         mApiKeyEdit.setText(mSharedPreferences.getString(getString(R.string.field_api_key), ""),
                 TextView.BufferType.EDITABLE);
         String currentTrainer = mSharedPreferences.getString(getString(R.string.field_trainer), "");
@@ -139,8 +129,6 @@ public class UserDetailsActivity extends Activity implements View.OnClickListene
         }
 
         mSharedPreferences.edit().
-                putString(getString(R.string.field_username), mUserNameEdit.getText().toString()).
-                putString(getString(R.string.field_password), mPasswordEdit.getText().toString()).
                 putString(getString(R.string.field_trainer), mTrainerEdit.getText().toString()).
                 putString(getString(R.string.field_api_key), mApiKeyEdit.getText().toString()).
                 putString(getString(R.string.field_previous_trainers), previousTrainers).

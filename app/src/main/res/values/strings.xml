@@ -38,5 +38,5 @@
     <string name="user_cancelled">User cancelled.</string>
     <string name="screen_cap">Screen cap</string>
     <string name="timestamp_format">"yyyy-MM-dd HH:mm:ss"</string>
-    <string name="website_url">https://test.wopogo.uk/app/api/v1/stat/stats.php</string>
+    <string name="website_url">https://wopogo.uk/app/api/v1/stat/stats.php</string>
 </resources>

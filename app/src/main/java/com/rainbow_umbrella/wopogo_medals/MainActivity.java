@@ -341,8 +341,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void confirmUpload() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(String.format("Upload details for trainer \"%s\"",
+        builder.setTitle(String.format("Upload trainer \"%s\" ?",
                 mCurrentTrainer));
+        ArrayList<String> valuesGoneDown = new ArrayList<String>();
+        for (int i = 0; i < mMedalList.size(); i++) {
+            String key = mMedalDefs.get(mMedalList.get(i).mName);
+            if (mPreviousMedalList.containsKey(key) && mMedalList.get(i).mValue != -1) {
+                if (mMedalList.get(i).mValue < mPreviousMedalList.get(key).intValue()) {
+                    valuesGoneDown.add(mMedalList.get(i).mName);
+                }
+            }
+        }
+        if (valuesGoneDown.size() > 0) {
+            String msgText = "WARNING: values have gone down";
+            for (int i = 0; i < valuesGoneDown.size(); i++) {
+                msgText += "\n    " + valuesGoneDown.get(i);
+            }
+            builder.setMessage(msgText);
+        }
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
