@@ -4,7 +4,7 @@ Android application to update values on the website http://wopogo.uk.
 
 ## Getting Started
 
-Currently in closed alpha testing and waiting for a interface to the website.
+First production release made.
 
 ## Authors
 
